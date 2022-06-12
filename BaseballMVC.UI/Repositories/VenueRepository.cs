@@ -41,8 +41,15 @@ namespace BaseballMVC.UI.Repositories
          }*/
         public Venue GetVenue(int id)
         {
-            var venue = dbEntities.Venues.Where(venues => venues.venueId == id).FirstOrDefault();
+            var venue = dbEntities.Venues.Find(id);
             return venue;
         }
+       
+            public IEnumerable<Venue> GetVenues()
+            {
+            return dbEntities.Venues;
+                
+            }
+        
     }
 }

@@ -1,4 +1,5 @@
-﻿using BaseballMVC.UI.Repositories;
+﻿using BaseballMVC.DataService;
+using BaseballMVC.UI.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,16 +18,17 @@ namespace BaseballMVC.UI.Controllers
 
         // GET: Venue
 
-        public ActionResult AddVenue()
+        public ActionResult Index()
         {
 
             return View();
         }
-        public ActionResult Venues()
+        public ActionResult ViewVenues()
         {
-            IEnumerable<Venue> venues = venueRepository.GetVenue();
+            IEnumerable<Venue> venues = venueRepository.GetVenues();
             return View(venues);
         }
+
         
 
 

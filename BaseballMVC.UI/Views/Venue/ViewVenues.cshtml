@@ -1,0 +1,52 @@
+﻿@model IEnumerable<BaseballMVC.DataService.Venue>
+
+@{
+    ViewBag.Title = "ViewVenues";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ViewVenues</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.venueName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.venueImageUrl)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.venueDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.venueLocation)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.venueName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.venueImageUrl)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.venueDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.venueLocation)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.venueId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.venueId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.venueId })
+        </td>
+    </tr>
+}
+
+</table>
