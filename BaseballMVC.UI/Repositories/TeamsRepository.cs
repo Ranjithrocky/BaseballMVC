@@ -31,14 +31,18 @@ namespace BaseballMVC.UI.Repositories
             dbEntities.Teams.Remove(team);
             dbEntities.SaveChanges();
         }
+
+        
+        ///  Jus did this for a practice not necessary in this prjct
+     
        /* public IEnumerable<Team> GetTeams(int id)
         {
             var team = dbEntities.Teams.Where(teams => teams.teamId == id);
             return team;
         }*/
-        public Team GetReview(int id)
+        public Team GetTeam(int id)
         {
-            var planReviews = dbEntities.Teams.Where(teams => teams.teamId == id).FirstOrDefault();
+            var team = dbEntities.Teams.Where(teams => teams.teamId == id).FirstOrDefault();
             return team;
         }
 
