@@ -25,8 +25,8 @@ namespace BaseballMVC.DataService
         public string venueImageUrl { get; set; }
         public string venueDescription { get; set; }
         public string venueLocation { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+    /*
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]*/
         public virtual ICollection<Event> Events { get; set; }
     }
 }

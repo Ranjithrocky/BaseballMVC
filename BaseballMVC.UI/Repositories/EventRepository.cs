@@ -7,27 +7,27 @@ using System.Web;
 
 namespace BaseballMVC.UI.Repositories
 {
-    public class RefreeRepository
+    public class EventRepository
     {
         public BaseballEntities dbEntities;
-        public RefreeRepository()
+        public EventRepository()
         {
             dbEntities = new BaseballEntities();
         }
-        public void AddRefree(Refree refree)
+        public void AddEvent(Event events)
         {
-            dbEntities.Refrees.Add(refree);
+            dbEntities.Events.Add(events);
             dbEntities.SaveChanges();
         }
-        public void EditRefree(Refree refree)
+        public void EditEvent(Event events)
         {
-            dbEntities.Entry(refree).State = EntityState.Modified;
+            dbEntities.Entry(events).State = EntityState.Modified;
             dbEntities.SaveChanges();
 
         }
-        public void DeleteRefree(Refree refree)
+        public void DeleteEvent(Event events)
         {
-            dbEntities.Refrees.Remove(refree);
+            dbEntities.Events.Remove(events);
             dbEntities.SaveChanges();
         }
 
@@ -39,11 +39,12 @@ namespace BaseballMVC.UI.Repositories
              var refree = dbEntities.Teams.Where(refree => refrees.refreeid == id);
              return refree;
          }*/
-        public Refree GetRefree(int id)
+        public Refree GetEvent(int id)
         {
-            var refree = dbEntities.Refrees.Where(refrees => refrees.refreeId == id).FirstOrDefault();
-            return refree;
+            var events = dbEntities.Refrees.Where(eventi => eventi.refreeId == id).FirstOrDefault();
+            return events;
         }
+
 
     }
 }
