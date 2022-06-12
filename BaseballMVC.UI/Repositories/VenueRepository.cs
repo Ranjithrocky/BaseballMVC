@@ -39,9 +39,9 @@ namespace BaseballMVC.UI.Repositories
              var team = dbEntities.Teams.Where(teams => teams.teamId == id);
              return team;
          }*/
-        public Refree GetVenue(int id)
+        public Venue GetVenue(int id)
         {
-            var venue = dbEntities.Venues.Where(venues => venues.refreeId == id).FirstOrDefault();
+            var venue = dbEntities.Venues.Where(venues => venues.venueId == id).FirstOrDefault();
             return venue;
         }
     }

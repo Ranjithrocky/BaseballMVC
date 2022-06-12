@@ -35,10 +35,10 @@ namespace BaseballMVC.UI.Repositories
         
         ///  Jus did this for a practice not necessary in this prjct
      
-       /* public IEnumerable<Team> GetTeams(int id)
+       /* public IEnumerable<Team> GetVenue(int id)
         {
-            var team = dbEntities.Teams.Where(teams => teams.teamId == id);
-            return team;
+            var venue = dbEntities.Teams.Where(teams => teams.teamId == id);
+            return venue;
         }*/
         public Team GetTeam(int id)
         {
