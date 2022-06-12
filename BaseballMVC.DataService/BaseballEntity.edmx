@@ -1,0 +1,431 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BaseballModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="eventId" />
+          </Key>
+          <Property Name="eventId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="eventName" Type="nvarchar(max)" />
+          <Property Name="applicantName" Type="nvarchar(max)" />
+          <Property Name="applicantAddress" Type="nvarchar(max)" />
+          <Property Name="applicantEmail" Type="nvarchar(max)" />
+          <Property Name="applicantMobile" Type="nvarchar(max)" />
+          <Property Name="eventAddress" Type="int" Nullable="false" />
+          <Property Name="eventFromdate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="eventToDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="RefreeId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="450" />
+        </EntityType>
+        <EntityType Name="Player">
+          <Key>
+            <PropertyRef Name="playerId" />
+          </Key>
+          <Property Name="playerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="playerName" Type="nvarchar(max)" />
+          <Property Name="teamId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Refree">
+          <Key>
+            <PropertyRef Name="refreeId" />
+          </Key>
+          <Property Name="refreeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="refreeName" Type="nvarchar(max)" />
+          <Property Name="noOfMatches" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Team">
+          <Key>
+            <PropertyRef Name="teamId" />
+          </Key>
+          <Property Name="teamId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="teamName" Type="nvarchar(max)" />
+          <Property Name="teamDescription" Type="nvarchar(max)" />
+          <Property Name="playerList" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="Password" Type="nvarchar(max)" />
+          <Property Name="Username" Type="nvarchar(max)" />
+          <Property Name="MobileNumber" Type="nvarchar(max)" />
+          <Property Name="UserRole" Type="nvarchar(max)" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="450" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Venue">
+          <Key>
+            <PropertyRef Name="venueId" />
+          </Key>
+          <Property Name="venueId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="venueName" Type="nvarchar(max)" />
+          <Property Name="venueImageUrl" Type="nvarchar(max)" />
+          <Property Name="venueDescription" Type="nvarchar(max)" />
+          <Property Name="venueLocation" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK_Event_Refree_RefreeId">
+          <End Role="Refree" Type="Self.Refree" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Event" Type="Self.Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Refree">
+              <PropertyRef Name="refreeId" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="RefreeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Event_Users_UserId">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Event" Type="Self.Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Event_Venue_eventAddress">
+          <End Role="Venue" Type="Self.Venue" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Event" Type="Self.Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Venue">
+              <PropertyRef Name="venueId" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="eventAddress" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Player_Team_teamId">
+          <End Role="Team" Type="Self.Team" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Player" Type="Self.Player" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="teamId" />
+            </Principal>
+            <Dependent Role="Player">
+              <PropertyRef Name="teamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BaseballModelStoreContainer">
+          <EntitySet Name="Event" EntityType="Self.Event" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Player" EntityType="Self.Player" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Refree" EntityType="Self.Refree" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Team" EntityType="Self.Team" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Venue" EntityType="Self.Venue" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Event_Refree_RefreeId" Association="Self.FK_Event_Refree_RefreeId">
+            <End Role="Refree" EntitySet="Refree" />
+            <End Role="Event" EntitySet="Event" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Event_Users_UserId" Association="Self.FK_Event_Users_UserId">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Event" EntitySet="Event" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Event_Venue_eventAddress" Association="Self.FK_Event_Venue_eventAddress">
+            <End Role="Venue" EntitySet="Venue" />
+            <End Role="Event" EntitySet="Event" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Player_Team_teamId" Association="Self.FK_Player_Team_teamId">
+            <End Role="Team" EntitySet="Team" />
+            <End Role="Player" EntitySet="Player" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BaseballModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="eventId" />
+          </Key>
+          <Property Name="eventId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="eventName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="applicantName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="applicantAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="applicantEmail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="applicantMobile" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="eventAddress" Type="Int32" Nullable="false" />
+          <Property Name="eventFromdate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="eventToDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="RefreeId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="String" MaxLength="450" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Refree" Relationship="Self.FK_Event_Refree_RefreeId" FromRole="Event" ToRole="Refree" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Event_Users_UserId" FromRole="Event" ToRole="Users" />
+          <NavigationProperty Name="Venue" Relationship="Self.FK_Event_Venue_eventAddress" FromRole="Event" ToRole="Venue" />
+        </EntityType>
+        <EntityType Name="Player">
+          <Key>
+            <PropertyRef Name="playerId" />
+          </Key>
+          <Property Name="playerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="playerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="teamId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Team" Relationship="Self.FK_Player_Team_teamId" FromRole="Player" ToRole="Team" />
+        </EntityType>
+        <EntityType Name="Refree">
+          <Key>
+            <PropertyRef Name="refreeId" />
+          </Key>
+          <Property Name="refreeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="refreeName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="noOfMatches" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Events" Relationship="Self.FK_Event_Refree_RefreeId" FromRole="Refree" ToRole="Event" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Team">
+          <Key>
+            <PropertyRef Name="teamId" />
+          </Key>
+          <Property Name="teamId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="teamName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="teamDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="playerList" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Players" Relationship="Self.FK_Player_Team_teamId" FromRole="Team" ToRole="Player" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Username" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MobileNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserRole" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" MaxLength="450" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Events" Relationship="Self.FK_Event_Users_UserId" FromRole="Users" ToRole="Event" />
+        </EntityType>
+        <EntityType Name="Venue">
+          <Key>
+            <PropertyRef Name="venueId" />
+          </Key>
+          <Property Name="venueId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="venueName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="venueImageUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="venueDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="venueLocation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Events" Relationship="Self.FK_Event_Venue_eventAddress" FromRole="Venue" ToRole="Event" />
+        </EntityType>
+        <Association Name="FK_Event_Refree_RefreeId">
+          <End Role="Refree" Type="Self.Refree" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Event" Type="Self.Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Refree">
+              <PropertyRef Name="refreeId" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="RefreeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Event_Users_UserId">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Event" Type="Self.Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Event_Venue_eventAddress">
+          <End Role="Venue" Type="Self.Venue" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Event" Type="Self.Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Venue">
+              <PropertyRef Name="venueId" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="eventAddress" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Player_Team_teamId">
+          <End Role="Team" Type="Self.Team" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Player" Type="Self.Player" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="teamId" />
+            </Principal>
+            <Dependent Role="Player">
+              <PropertyRef Name="teamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BaseballEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Events" EntityType="Self.Event" />
+          <EntitySet Name="Players" EntityType="Self.Player" />
+          <EntitySet Name="Refrees" EntityType="Self.Refree" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="Teams" EntityType="Self.Team" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="Venues" EntityType="Self.Venue" />
+          <AssociationSet Name="FK_Event_Refree_RefreeId" Association="Self.FK_Event_Refree_RefreeId">
+            <End Role="Refree" EntitySet="Refrees" />
+            <End Role="Event" EntitySet="Events" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Event_Users_UserId" Association="Self.FK_Event_Users_UserId">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Event" EntitySet="Events" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Event_Venue_eventAddress" Association="Self.FK_Event_Venue_eventAddress">
+            <End Role="Venue" EntitySet="Venues" />
+            <End Role="Event" EntitySet="Events" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Player_Team_teamId" Association="Self.FK_Player_Team_teamId">
+            <End Role="Team" EntitySet="Teams" />
+            <End Role="Player" EntitySet="Players" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BaseballModelStoreContainer" CdmEntityContainer="BaseballEntities">
+          <EntitySetMapping Name="Events">
+            <EntityTypeMapping TypeName="BaseballModel.Event">
+              <MappingFragment StoreEntitySet="Event">
+                <ScalarProperty Name="eventId" ColumnName="eventId" />
+                <ScalarProperty Name="eventName" ColumnName="eventName" />
+                <ScalarProperty Name="applicantName" ColumnName="applicantName" />
+                <ScalarProperty Name="applicantAddress" ColumnName="applicantAddress" />
+                <ScalarProperty Name="applicantEmail" ColumnName="applicantEmail" />
+                <ScalarProperty Name="applicantMobile" ColumnName="applicantMobile" />
+                <ScalarProperty Name="eventAddress" ColumnName="eventAddress" />
+                <ScalarProperty Name="eventFromdate" ColumnName="eventFromdate" />
+                <ScalarProperty Name="eventToDate" ColumnName="eventToDate" />
+                <ScalarProperty Name="RefreeId" ColumnName="RefreeId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Players">
+            <EntityTypeMapping TypeName="BaseballModel.Player">
+              <MappingFragment StoreEntitySet="Player">
+                <ScalarProperty Name="playerId" ColumnName="playerId" />
+                <ScalarProperty Name="playerName" ColumnName="playerName" />
+                <ScalarProperty Name="teamId" ColumnName="teamId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Refrees">
+            <EntityTypeMapping TypeName="BaseballModel.Refree">
+              <MappingFragment StoreEntitySet="Refree">
+                <ScalarProperty Name="refreeId" ColumnName="refreeId" />
+                <ScalarProperty Name="refreeName" ColumnName="refreeName" />
+                <ScalarProperty Name="noOfMatches" ColumnName="noOfMatches" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="BaseballModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Teams">
+            <EntityTypeMapping TypeName="BaseballModel.Team">
+              <MappingFragment StoreEntitySet="Team">
+                <ScalarProperty Name="teamId" ColumnName="teamId" />
+                <ScalarProperty Name="teamName" ColumnName="teamName" />
+                <ScalarProperty Name="teamDescription" ColumnName="teamDescription" />
+                <ScalarProperty Name="playerList" ColumnName="playerList" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="BaseballModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
+                <ScalarProperty Name="UserRole" ColumnName="UserRole" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Venues">
+            <EntityTypeMapping TypeName="BaseballModel.Venue">
+              <MappingFragment StoreEntitySet="Venue">
+                <ScalarProperty Name="venueId" ColumnName="venueId" />
+                <ScalarProperty Name="venueName" ColumnName="venueName" />
+                <ScalarProperty Name="venueImageUrl" ColumnName="venueImageUrl" />
+                <ScalarProperty Name="venueDescription" ColumnName="venueDescription" />
+                <ScalarProperty Name="venueLocation" ColumnName="venueLocation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
